@@ -3120,6 +3120,7 @@ nice_agent_set_remote_credentials (
   Stream *stream;
   gboolean ret = FALSE;
 
+  g_return_val_if_fail (NICE_IS_AGENT (agent), FALSE);
   agent_lock();
 
   stream = agent_find_stream (agent, stream_id);
@@ -3128,6 +3129,34 @@ nice_agent_set_remote_credentials (
 
     g_strlcpy (stream->remote_ufrag, ufrag, NICE_STREAM_MAX_UFRAG);
     g_strlcpy (stream->remote_password, pwd, NICE_STREAM_MAX_PWD);
+
+    ret = TRUE;
+    goto done;
+  }
+
+ done:
+  agent_unlock_and_emit (agent);
+  return ret;
+}
+
+NICEAPI_EXPORT gboolean
+nice_agent_set_local_credentials (
+  NiceAgent *agent,
+  guint stream_id,
+  const gchar *ufrag, const gchar *pwd)
+{
+  Stream *stream;
+  gboolean ret = FALSE;
+
+  g_return_val_if_fail (NICE_IS_AGENT (agent), FALSE);
+  agent_lock();
+
+  stream = agent_find_stream (agent, stream_id);
+  /* note: oddly enough, ufrag and pwd can be empty strings */
+  if (stream && ufrag && pwd) {
+
+    g_strlcpy (stream->local_ufrag, ufrag, NICE_STREAM_MAX_UFRAG);
+    g_strlcpy (stream->local_password, pwd, NICE_STREAM_MAX_PWD);
 
     ret = TRUE;
     goto done;

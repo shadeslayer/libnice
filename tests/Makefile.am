@@ -45,7 +45,8 @@ check_PROGRAMS = \
 	test-dribble \
 	test-new-dribble \
 	test-tcp \
-	test-icetcp
+	test-icetcp \
+	test-credentials
 
 dist_check_SCRIPTS = \
 	check-test-fullmode-with-stun.sh \
@@ -108,6 +109,8 @@ test_new_dribble_LDADD = $(COMMON_LDADD)
 test_tcp_LDADD = $(COMMON_LDADD)
 
 test_icetcp_LDADD = $(COMMON_LDADD)
+
+test_credentials_LDADD = $(COMMON_LDADD)
 
 all-local:
 	chmod a+x $(srcdir)/check-test-fullmode-with-stun.sh
